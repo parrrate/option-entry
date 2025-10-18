@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.0.0-a.2] — 2025-10-18
+
 ### Changed
 
 - `#![no_std]`
@@ -50,6 +52,7 @@
 
   - `or_insert_with`
 
-[unreleased]: https://github.com/parrrate/option-entry/compare/0.0.0-a.1...HEAD
+[unreleased]: https://github.com/parrrate/option-entry/compare/0.0.0-a.2...HEAD
+[0.0.0-a.2]: https://github.com/parrrate/option-entry/compare/0.0.0-a.1...0.0.0-a.2
 [0.0.0-a.1]: https://github.com/parrrate/option-entry/compare/0.0.0-a.0...0.0.0-a.1
 [0.0.0-a.0]: https://github.com/parrrate/option-entry/releases/tag/0.0.0-a.0

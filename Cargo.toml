@@ -1,6 +1,6 @@
 [package]
 name = "option-entry"
-version = "0.0.0-a.1"
+version = "0.0.0-a.2"
 edition = "2024"
 publish = true
 repository = "https://github.com/parrrate/option-entry"

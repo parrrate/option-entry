@@ -55,7 +55,10 @@ impl<'a, T> OccupiedEntry<'a, T> {
         self.option.as_mut().expect("OccupiedEntry is None?")
     }
 
-    /// [`Option::replace`]. Returns `T` instead of `Option<T>`.
+    /// [`Option::replace`]. Returns `T` instead of `Option<T>`, like [`mem::replace(x, value)`]
+    /// within `if let Some(x) = o`.
+    ///
+    /// [`mem::replace(x, value)`]: core::mem::replace
     pub fn insert(&mut self, value: T) -> T {
         self.option.replace(value).expect("OccupiedEntry is None?")
     }
