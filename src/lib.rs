@@ -58,6 +58,11 @@ impl<'a, T> OccupiedEntry<'a, T> {
         self.option.replace(value).expect("OccupiedEntry is None?")
     }
 
+    /// Converts the entry into a mutable reference to its value.
+    ///
+    /// If you need multiple references to the [`OccupiedEntry`], see [`get_mut`].
+    ///
+    /// [`get_mut`]: Self::get_mut
     pub fn into_mut(self) -> &'a mut T {
         self.option.as_mut().expect("OccupiedEntry is None?")
     }
