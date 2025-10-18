@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `#![no_std]`
+
 ## [0.0.0-a.1] — 2025-10-18
 
 ### Added

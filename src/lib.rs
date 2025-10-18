@@ -4,6 +4,8 @@
 //!
 //! Docs and interface are based on `btree_map::Entry`.
 
+#![no_std]
+
 /// [`None`]
 pub struct VacantEntry<'a, T> {
     option: &'a mut Option<T>,
