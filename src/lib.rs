@@ -41,12 +41,12 @@ impl<'a, T> OccupiedEntry<'a, T> {
         Self { option }
     }
 
-    /// Gets a reference to the value in the [`Option`].
+    /// Gets a reference to the value within [`Some`].
     pub fn get(&self) -> &T {
         self.option.as_ref().expect("OccupiedEntry is None?")
     }
 
-    /// Gets a mutable reference to the value in the [`Option`].
+    /// Gets a mutable reference to the value within [`Some`].
     ///
     /// If you need a reference to the [`OccupiedEntry`] that may outlive the destruction of the [`Entry`] value, see [`into_mut`].
     ///
@@ -56,7 +56,7 @@ impl<'a, T> OccupiedEntry<'a, T> {
     }
 
     /// [`Option::replace`]. Returns `T` instead of `Option<T>`, like [`mem::replace(x, value)`]
-    /// within `if let Some(x) = o`.
+    /// within `if let Some(x) = o` context.
     ///
     /// [`mem::replace(x, value)`]: core::mem::replace
     pub fn insert(&mut self, value: T) -> T {
@@ -83,11 +83,12 @@ impl<'a, T> OccupiedEntry<'a, T> {
     }
 }
 
-/// `&mut Option<T>` with strongly typed context of whether it's [`None`] or [`Some`]
+/// `&mut Option<T>` with strongly typed context of whether it's [`None`] or [`Some`] which provides
+/// methods like [`OccupiedEntry::remove`].
 pub enum Entry<'a, T> {
-    /// `None`
+    /// [`None`]
     Vacant(VacantEntry<'a, T>),
-    /// `Some`
+    /// [`Some`]
     Occupied(OccupiedEntry<'a, T>),
 }
 
@@ -108,7 +109,7 @@ impl<'a, T> Entry<'a, T> {
         option.entry()
     }
 
-    /// Sets the value of the option, and returns an [`OccupiedEntry`].
+    /// Sets the option to `Some(value)`, and returns an [`OccupiedEntry`].
     pub fn insert_entry(self, value: T) -> OccupiedEntry<'a, T> {
         match self {
             Entry::Occupied(mut entry) => {

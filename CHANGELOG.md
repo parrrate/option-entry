@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [0.1.0] — 2025-10-18
+
+first stable release
+
+### Changed
+
+- further docs edits
+
 ## [0.0.0-a.2] — 2025-10-18
 
 ### Changed
@@ -52,7 +60,8 @@
 
   - `or_insert_with`
 
-[unreleased]: https://github.com/parrrate/option-entry/compare/0.0.0-a.2...HEAD
+[unreleased]: https://github.com/parrrate/option-entry/compare/0.1.0...HEAD
+[0.1.0]: https://github.com/parrrate/option-entry/compare/0.0.0-a.2...0.1.0
 [0.0.0-a.2]: https://github.com/parrrate/option-entry/compare/0.0.0-a.1...0.0.0-a.2
 [0.0.0-a.1]: https://github.com/parrrate/option-entry/compare/0.0.0-a.0...0.0.0-a.1
 [0.0.0-a.0]: https://github.com/parrrate/option-entry/releases/tag/0.0.0-a.0
