@@ -1,6 +1,6 @@
 [package]
 name = "option-entry"
-version = "0.0.0-a.0"
+version = "0.0.0-a.1"
 edition = "2024"
 publish = true
 repository = "https://github.com/parrrate/option-entry"
@@ -8,7 +8,7 @@ authors = ["Alisa Feistel <alisafeistel@gmail.com>"]
 license = "MIT OR Apache-2.0"
 rust-version = "1.90"
 description = "`Entry` for `Option`"
-exclude = ["/.github", "/.gitignore", "/.vscode"]
+exclude = ["/.github", "/.gitignore", "/.vscode", "CHANGELOG.md"]
 
 [dependencies]
 

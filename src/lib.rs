@@ -1,3 +1,10 @@
+//! [`Entry`] for [`Option`]s.
+//!
+//! See [`OccupiedEntry::remove`] for why.
+//!
+//! Docs and interface are based on `btree_map::Entry`.
+
+/// [`None`]
 pub struct VacantEntry<'a, T> {
     option: &'a mut Option<T>,
 }
@@ -8,10 +15,12 @@ impl<'a, T> VacantEntry<'a, T> {
         Self { option }
     }
 
+    /// Sets the value of the [`Option`], and returns a mutable reference to it.
     pub fn insert(self, value: T) -> &'a mut T {
         self.option.insert(value)
     }
 
+    /// Sets the value of the [`Option`], and returns an [`OccupiedEntry`].
     pub fn insert_entry(self, value: T) -> OccupiedEntry<'a, T> {
         let Self { option } = self;
         *option = Some(value);
@@ -19,6 +28,7 @@ impl<'a, T> VacantEntry<'a, T> {
     }
 }
 
+/// [`Some`]
 pub struct OccupiedEntry<'a, T> {
     option: &'a mut Option<T>,
 }
@@ -29,14 +39,21 @@ impl<'a, T> OccupiedEntry<'a, T> {
         Self { option }
     }
 
+    /// Gets a reference to the value in the [`Option`].
     pub fn get(&self) -> &T {
         self.option.as_ref().expect("OccupiedEntry is None?")
     }
 
+    /// Gets a mutable reference to the value in the [`Option`].
+    ///
+    /// If you need a reference to the [`OccupiedEntry`] that may outlive the destruction of the [`Entry`] value, see [`into_mut`].
+    ///
+    /// [`into_mut`]: Self::into_mut
     pub fn get_mut(&mut self) -> &mut T {
         self.option.as_mut().expect("OccupiedEntry is None?")
     }
 
+    /// [`Option::replace`]. Returns `T` instead of `Option<T>`.
     pub fn insert(&mut self, value: T) -> T {
         self.option.replace(value).expect("OccupiedEntry is None?")
     }
@@ -45,13 +62,22 @@ impl<'a, T> OccupiedEntry<'a, T> {
         self.option.as_mut().expect("OccupiedEntry is None?")
     }
 
+    /// [`Option::take`]. Returns `T` instead of `Option<T>`.
+    ///
+    /// This method is the main reason for this crate to exist: this allows avoiding doing
+    /// double-checks in code that needs to do deferred [`take`].
+    ///
+    /// [`take`]: Option::take
     pub fn remove(self) -> T {
         self.option.take().expect("OccupiedEntry is None?")
     }
 }
 
+/// `&mut Option<T>` with strongly typed context of whether it's [`None`] or [`Some`]
 pub enum Entry<'a, T> {
+    /// `None`
     Vacant(VacantEntry<'a, T>),
+    /// `Some`
     Occupied(OccupiedEntry<'a, T>),
 }
 
@@ -63,6 +89,7 @@ impl<'a, T> Entry<'a, T> {
         }
     }
 
+    /// Provides in-place mutable access to a [`Some`] before any potential inserts into the option.
     pub fn and_modify(self, f: impl FnOnce(&mut T)) -> Self {
         let option = self.into_option_mut();
         if let Some(value) = option {
@@ -71,6 +98,7 @@ impl<'a, T> Entry<'a, T> {
         option.entry()
     }
 
+    /// Sets the value of the option, and returns an [`OccupiedEntry`].
     pub fn insert_entry(self, value: T) -> OccupiedEntry<'a, T> {
         match self {
             Entry::Occupied(mut entry) => {
@@ -81,6 +109,8 @@ impl<'a, T> Entry<'a, T> {
         }
     }
 
+    /// Ensures a value is in the option by inserting the default value if [`None`], and returns a
+    /// mutable reference to that (already present or default) value.
     pub fn or_default(self) -> &'a mut T
     where
         T: Default,
@@ -88,6 +118,8 @@ impl<'a, T> Entry<'a, T> {
         self.into_option_mut().get_or_insert_default()
     }
 
+    /// Ensures a value is in the option by inserting `default` if [`None`], and returns a mutable
+    /// reference to that (already present or `default`) value.
     pub fn or_insert(self, default: T) -> &'a mut T {
         match self {
             Entry::Occupied(entry) => entry.into_mut(),
@@ -95,6 +127,8 @@ impl<'a, T> Entry<'a, T> {
         }
     }
 
+    /// Ensures a value is in the option by inserting `default()` if [`None`], and returns a mutable
+    /// reference to that (already present or `default()`) value.
     pub fn or_insert_with(self, default: impl FnOnce() -> T) -> &'a mut T {
         match self {
             Entry::Occupied(entry) => entry.into_mut(),
@@ -107,8 +141,10 @@ mod private {
     pub trait Sealed {}
 }
 
+/// Extension trait for viewing [`Option`] as [`Entry`].
 pub trait OptionEntry: private::Sealed {
     type T;
+    /// View the current [`Option`] as an [`Entry`], primarily for [`OccupiedEntry::remove`].
     fn entry(&mut self) -> Entry<'_, Self::T>;
 }
 
