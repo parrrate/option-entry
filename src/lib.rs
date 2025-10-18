@@ -148,6 +148,7 @@ mod private {
 
 /// Extension trait for viewing [`Option`] as [`Entry`].
 pub trait OptionEntry: private::Sealed {
+    /// `T` in `Option<T>`.
     type T;
     /// View the current [`Option`] as an [`Entry`], primarily for [`OccupiedEntry::remove`].
     fn entry(&mut self) -> Entry<'_, Self::T>;
